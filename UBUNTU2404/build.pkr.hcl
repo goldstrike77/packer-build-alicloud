@@ -1,0 +1,44 @@
+variable "artifact" {}
+
+source "alicloud-ecs" "images" {
+  region                      = lookup(var.artifact, "region", "cn-shanghai")
+  instance_type               = lookup(var.artifact, "instance_type", "ecs.e-c1m1.large")
+  source_image                = lookup(var.artifact, "source_image", "ubuntu_24_04_x64_20G_alibase_20260119.vhd")
+  associate_public_ip_address = lookup(var.artifact, "associate_public_ip_address", true)
+  internet_charge_type        = lookup(var.artifact, "internet_charge_type", "PayByTraffic")
+  user_data_file              = lookup(var.artifact, "user_data_file", "user_data.sh")
+  instance_name               = var.artifact.instance_name
+  image_name                  = "${var.artifact.instance_name}-${formatdate("YYYY-MM-DD-hhmm", timestamp())}"
+  image_description           = lookup(var.artifact, "image_description", "Automate Image Builds by HashiCorp Packer")
+  tags                        = lookup(var.artifact, "tags", {})
+  run_tags                    = lookup(var.artifact, "tags", {})
+  system_disk_mapping {
+    disk_category = lookup(var.artifact.system_disk_mapping, "disk_category", "cloud_essd")
+    disk_size     = lookup(var.artifact.system_disk_mapping, "disk_size", 40)
+  }
+  ssh_username = lookup(var.artifact, "ssh_username", "root")
+}
+
+build {
+  sources = [
+    "sources.alicloud-ecs.images"
+  ]
+  provisioner "shell" {
+    inline = [
+      "sleep 5",
+      "apt-get update -qq > /dev/null 2>&1",
+      "DEBIAN_FRONTEND=noninteractive apt-get upgrade -y -qq > /dev/null 2>&1",
+      "apt-get install auditd -y -qq > /dev/null 2>&1",
+      "apt-get purge *networkmanager* -y -qq > /dev/null 2>&1",
+      "apt-get purge avahi-daemon -y -qq > /dev/null 2>&1",
+      "apt-get purge *bluetooth* -y -qq > /dev/null 2>&1",
+      "apt-get purge kdump-tools -y -qq > /dev/null 2>&1",
+      "apt-get purge wpasupplicant -y -qq > /dev/null 2>&1",
+      "apt-get purge yp-tools -y -qq > /dev/null 2>&1",
+      "rm -rf /var/lib/apt/lists/*",
+      "apt-get autoremove -y -qq > /dev/null 2>&1",
+      "apt-get autoclean -qq > /dev/null 2>&1",
+      "curl -ksSL https://mirrors.goldstrike.asia/cybersecurity.sh | bash"
+    ]
+  }
+}
