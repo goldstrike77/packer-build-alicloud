@@ -1,2 +1,1 @@
-# packer-build-alicloud
-Creating a AliCloud private image using HashiCorp Packer.
+Creating a private image on Alibaba Cloud with HashiCorp Packer to automate, standardize, and version your infrastructure.
