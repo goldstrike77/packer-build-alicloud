@@ -7,11 +7,12 @@ source "alicloud-ecs" "images" {
   associate_public_ip_address = lookup(var.artifact, "associate_public_ip_address", true)
   internet_charge_type        = lookup(var.artifact, "internet_charge_type", "PayByTraffic")
   user_data_file              = lookup(var.artifact, "user_data_file", "user_data.sh")
-  instance_name               = var.artifact.instance_name
+  instance_name               = lookup(var.artifact, "instance_name", "")
   image_name                  = "${var.artifact.instance_name}-${formatdate("YYYY-MM-DD-hhmm", timestamp())}"
   image_description           = lookup(var.artifact, "image_description", "Automate Image Builds by HashiCorp Packer")
   image_share_account         = lookup(var.artifact, "image_share_account", [])
   image_copy_regions          = lookup(var.artifact, "image_copy_regions", [])
+  image_copy_names            = ["${var.artifact.instance_name}-${formatdate("YYYY-MM-DD-hhmm", timestamp())}"]
   tags                        = lookup(var.artifact, "tags", {})
   run_tags                    = lookup(var.artifact, "tags", {})
   system_disk_mapping {
