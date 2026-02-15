@@ -14,8 +14,8 @@
 Packer使用HashiCorp配置语言（HCL）或JSON格式定义镜像的构建过程。以下是一个HCL格式的示例模板，该模板将在上海地域，基于Alibaba Cloud Linux 3官方镜像，构建一个基础系统盘为40GB ESSD云盘、且已完成系统更新的自定义镜像。
 ```
 source "alicloud-ecs" "images" {
-  region                      = lookup(var.artifact, "region", "cn-shanghai")
-  instance_type               = lookup(var.artifact, "instance_type", "ecs.e-c1m1.large")
+  region                      = "cn-shanghai"
+  instance_type               = "ecs.e-c1m1.large"
   source_image                = "aliyun_3_x64_20G_alibase_20260122.vhd"
   associate_public_ip_address = true
   internet_charge_type        = "PayByTraffic"
@@ -48,7 +48,7 @@ build {
   - region：临时实例的地域，例如 cn-shanghai。
   - image_name：最终生成的自定义镜像名称。
   - source_image：基础镜像ID，可以从云服务器控制台的公共镜像列表获取。
-  - instance_type：临时实例的规格，例如 ecs.g6.large。
+  - instance_type：临时实例的规格，例如 ecs.e-c1m1.large。
   - ssh_username：登录临时实例的用户名，Linux系统通常是 root。
   - tags：可选，可以为生成的镜像绑定标签，方便管理，例如 {"version": "v1", "app": "web"}。
 - provisioners (配置器)：定义了在临时实例上执行的配置脚本。本例中使用 shell 类型的配置器，通过 inline 命令进行了更新。你也可以通过 scripts 参数指定一个更复杂的Shell脚本文件。
