@@ -3,7 +3,7 @@ name: Creating a HuaweiCloud private image using HashiCorp Packer.
 on:
  push:
    branches:
-   - v0.1
+   - main
  pull_request: {}
 
 env:
