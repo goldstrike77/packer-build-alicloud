@@ -2,16 +2,14 @@
 
 #### 以下是详细的操作步骤：
 
-1. 准备前提条件,在开始构建前请确保完成以下准备工作：
-创建RAM用户与AccessKey：为保障账户安全，强烈建议通过RAM（资源访问管理）创建子账号，并为该账号生成AccessKey ID和AccessKey Secret。Packer将使用这些凭证调用阿里云API，动态创建和管理临时资源。该RAM账号需授予如下操作权限（建议通过自定义策略进行精细授权）：
+1. 在开始构建前请确保完成以下准备工作：创建RAM用户与AccessKey：为保障账户安全，墙裂建议通过RAM创建子账号，并为该账号生成AccessKey ID和AccessKey Secret。Packer将使用这些凭证调用阿里云API，动态创建和管理临时资源。该RAM账号需通过自定义策略进行精细授予如下操作权限。
 ```
 {"Version":"1","Statement":[{"Effect":"Allow","Action":["ecs:AttachKeyPair","ecs:CreateKeyPair","ecs:DeleteKeyPairs","ecs:DetachKeyPair","ecs:DescribeKeyPairs","ecs:DescribeDisks","ecs:ImportKeyPair","ecs:CreateSecurityGroup","ecs:AuthorizeSecurityGroup","ecs:AuthorizeSecurityGroupEgress","ecs:DescribeSecurityGroups","ecs:DeleteSecurityGroup","ecs:CopyImage","ecs:CancelCopyImage","ecs:CreateImage","ecs:DescribeImages","ecs:DescribeImageFromFamily","ecs:DeleteImage","ecs:ModifyImageAttribute","ecs:DescribeImageSharePermission","ecs:ModifyImageSharePermission","ecs:DescribeInstances","ecs:StartInstance","ecs:StopInstance","ecs:CreateInstance","ecs:DeleteInstance","ecs:RunInstances","ecs:RebootInstance","ecs:RenewInstance","ecs:CreateSnapshot","ecs:DeleteSnapshot","ecs:DescribeSnapshots","ecs:TagResources","ecs:UntagResources","ecs:AllocatePublicIpAddress","ecs:AddTags","vpc:DescribeVpcs","vpc:CreateVpc","vpc:DeleteVpc","vpc:DescribeVSwitches","vpc:CreateVSwitch","vpc:DeleteVSwitch","vpc:AllocateEipAddress","vpc:AssociateEipAddress","vpc:UnassociateEipAddress","vpc:ReleaseEipAddress","vpc:DescribeEipAddresses"],"Resource":"*"}]}
 ```
 
 2. 了解费用构成：在镜像构建过程中，Packer会临时创建一个按量付费的云服务器实例，用于执行软件安装和环境配置。待镜像创建完成后，该实例及其相关网络资源（如VPC、交换机、EIP）将被自动释放。在此期间会产生少量费用。
 
-3. 定义变量文件
-Packer使用HashiCorp配置语言（HCL）或JSON格式定义镜像的构建过程。以下是一个HCL格式的示例模板，该模板将在上海地域，基于Alibaba Cloud Linux 3官方镜像，构建一个基础系统盘为40GB ESSD云盘、且已完成系统更新的自定义镜像。
+3. 定义变量文件：Packer使用HashiCorp配置语言（HCL）或JSON格式定义镜像的构建过程。以下是一个HCL格式的示例模板，该模板将在上海地域，基于Alibaba Cloud Linux 3官方镜像，构建一个基础系统盘为40GB ESSD云盘、且已完成系统更新的自定义镜像。
 ```
 source "alicloud-ecs" "images" {
   region                      = "cn-shanghai"
@@ -50,7 +48,7 @@ build {
   - source_image：基础镜像ID，可以从云服务器控制台的公共镜像列表获取。
   - instance_type：临时实例的规格，例如 ecs.e-c1m1.large。
   - ssh_username：登录临时实例的用户名，Linux系统通常是 root。
-  - tags：可选，可以为生成的镜像绑定标签，方便管理，例如 {"version": "v1", "app": "web"}。
+  - tags：可选，可以为生成的镜像绑定标签，方便管理。
 - provisioners (配置器)：定义了在临时实例上执行的配置脚本。本例中使用 shell 类型的配置器，通过 inline 命令进行了更新。你也可以通过 scripts 参数指定一个更复杂的Shell脚本文件。
 
 4. 执行构建
