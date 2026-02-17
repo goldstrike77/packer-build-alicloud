@@ -27,3 +27,8 @@ cmd.exe /c net start winrm
 # Add account
 cmd.exe /c net user ecs-admin /add
 cmd.exe /c net localgroup administrators ecs-admin /add
+# Rename administrator account
+Rename-LocalUser -Name "Administrator" -NewName "xadmin"
+# Set Windows virtual memory.
+cmd.exe /c wmic computersystem where name="%computername%" set AutomaticManagedPagefile=False
+cmd.exe /c wmic pagefileset where name="C:\\pagefile.sys" set InitialSize=4096,MaximumSize=4096
