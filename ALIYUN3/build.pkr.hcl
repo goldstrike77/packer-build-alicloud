@@ -31,7 +31,7 @@ build {
       "sleep 5",
       "yum update -y > /dev/null 2>&1",
       "yum clean all > /dev/null 2>&1",
-      "curl -ksSL https://mirrors.goldstrike.asia/cloud-level-protection.sh | bash"
+      "curl -ksSL https://goldstrike.oss-cn-shanghai.aliyuncs.com/hardening/scripts/cloud-level-protection.sh | bash"
     ]
   }
 }

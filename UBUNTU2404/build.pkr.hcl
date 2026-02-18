@@ -35,7 +35,7 @@ build {
       "rm -rf /var/lib/apt/lists/*",
       "apt-get autoremove -y > /dev/null 2>&1",
       "apt-get autoclean > /dev/null 2>&1",
-      "curl -ksSL https://mirrors.goldstrike.asia/cloud-level-protection.sh | bash"
+      "curl -ksSL https://goldstrike.oss-cn-shanghai.aliyuncs.com/hardening/scripts/cloud-level-protection.sh | bash"
     ]
   }
 }
