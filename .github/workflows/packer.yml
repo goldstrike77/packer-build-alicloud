@@ -1,4 +1,4 @@
-name: Creating a HuaweiCloud private image using HashiCorp Packer.
+name: Creating a AliCloud private image using HashiCorp Packer.
 
 on:
  push:
