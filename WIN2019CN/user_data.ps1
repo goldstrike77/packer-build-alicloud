@@ -25,8 +25,8 @@ cmd.exe /c net stop winrm
 cmd.exe /c sc config winrm start= auto
 cmd.exe /c net start winrm
 # Add account
-cmd.exe /c net user ecs-admin /add
-cmd.exe /c net localgroup administrators ecs-admin /add
+cmd.exe /c net user ecsadmin /add
+cmd.exe /c net localgroup administrators ecsadmin /add
 # Rename administrator account
 Rename-LocalUser -Name "Administrator" -NewName "xadmin"
 # Set Windows virtual memory.

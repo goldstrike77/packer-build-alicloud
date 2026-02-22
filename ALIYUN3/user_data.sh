@@ -1,6 +1,6 @@
 #!/bin/sh
-useradd -G wheel -m -s /bin/bash ecs-admin
+useradd -G wheel -m -s /bin/bash ecsadmin
 echo "%wheel ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers.d/wheel
-chmod 750 /home/ecs-admin
-sed -i 's/wheel:x:10:ecs-admin/wheel:x:10:ecs-admin,root/' /etc/group
-echo "AllowUsers ecs-admin" >> /etc/ssh/sshd_config
+chmod 750 /home/ecsadmin
+sed -i 's/wheel:x:10:ecsadmin/wheel:x:10:ecsadmin,root/' /etc/group
+echo "AllowUsers *" >> /etc/ssh/sshd_config
