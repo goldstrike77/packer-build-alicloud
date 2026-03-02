@@ -31,7 +31,7 @@ build {
       "sleep 5",
       "apt-get update > /dev/null 2>&1",
       "DEBIAN_FRONTEND=noninteractive apt-get upgrade -y > /dev/null 2>&1",
-      "apt-get install auditd -y -qq > /dev/null 2>&1",
+      "apt-get install auditd libpam-pwquality -y -qq > /dev/null 2>&1",
       "rm -rf /var/lib/apt/lists/*",
       "apt-get autoremove -y > /dev/null 2>&1",
       "apt-get autoclean > /dev/null 2>&1",
